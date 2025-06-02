@@ -56,7 +56,8 @@ class ApiService {
         final data = json.decode(responseBody);
         return GenerationResponse.fromJson(data);
       } else {
-        throw ApiException('Failed to generate content: ${response.statusCode}', responseBody);
+        throw ApiException(
+            'Failed to generate content: ${response.statusCode}', responseBody);
       }
     } catch (e) {
       throw ApiException('Network error', e.toString());
@@ -69,7 +70,7 @@ class ApiService {
       final headers = <String, String>{
         'Content-Type': 'application/json',
       };
-      
+
       if (AppConfig.apiKey.isNotEmpty) {
         headers['X-API-Key'] = AppConfig.apiKey;
       }
@@ -80,23 +81,25 @@ class ApiService {
         final data = json.decode(response.body);
         return TaskResult.fromJson(data);
       } else {
-        throw ApiException('Failed to get task result: ${response.statusCode}', response.body);
+        throw ApiException(
+            'Failed to get task result: ${response.statusCode}', response.body);
       }
     } catch (e) {
       throw ApiException('Network error', e.toString());
     }
   }
 
-  static Stream<TaskResult> pollTaskResult(String taskId, {Duration interval = const Duration(seconds: 2)}) async* {
+  static Stream<TaskResult> pollTaskResult(String taskId,
+      {Duration interval = const Duration(seconds: 2)}) async* {
     while (true) {
       try {
         final result = await getTaskResult(taskId);
         yield result;
-        
+
         if (result.status == statusSuccess || result.status == statusFailure) {
           break;
         }
-        
+
         await Future.delayed(interval);
       } catch (e) {
         yield TaskResult(

@@ -9,7 +9,7 @@ class AppHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveHelper.isMobile(context);
-    
+
     return Column(
       children: [
         Row(
@@ -43,7 +43,8 @@ class AppHeader extends StatelessWidget {
               child: Text(
                 AppConfig.appName,
                 style: TextStyle(
-                  fontSize: ResponsiveHelper.getFontSize(context, isMobile ? 36 : 52),
+                  fontSize:
+                      ResponsiveHelper.getFontSize(context, isMobile ? 36 : 52),
                   fontWeight: FontWeight.w900,
                   color: Colors.white,
                   letterSpacing: 2,

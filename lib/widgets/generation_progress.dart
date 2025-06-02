@@ -33,7 +33,7 @@ class _GenerationProgressState extends State<GenerationProgress>
       duration: const Duration(seconds: 2),
       vsync: this,
     )..repeat();
-    
+
     _progressAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,

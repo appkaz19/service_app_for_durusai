@@ -47,7 +47,9 @@ class TaskResult {
 
   bool get isCompleted => status == ApiService.statusSuccess;
   bool get isFailed => status == ApiService.statusFailure;
-  bool get isProcessing => status == ApiService.statusProcessing || status == ApiService.statusPending;
+  bool get isProcessing =>
+      status == ApiService.statusProcessing ||
+      status == ApiService.statusPending;
 }
 
 class ApiException implements Exception {

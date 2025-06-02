@@ -1,124 +1,160 @@
 import 'package:flutter/material.dart';
 import '../models/generation_options.dart';
-import '../constants/app_constants.dart';
 import '../utils/responsive_helper.dart';
+import '../constants/app_constants.dart';
 
 class OptionsGrid extends StatelessWidget {
   final GenerationOptions options;
   final Function(GenerationOptions) onOptionsChanged;
-
+  
   const OptionsGrid({
-    super.key,
+    Key? key,
     required this.options,
     required this.onOptionsChanged,
-  });
-
+  }) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
-    final crossAxisCount = ResponsiveHelper.getCrossAxisCount(context);
+    final isDesktop = ResponsiveHelper.isDesktop(context);
     final isMobile = ResponsiveHelper.isMobile(context);
     
-    return GridView.count(
-      crossAxisCount: crossAxisCount,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: isMobile ? 3.5 : 2.5,
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildOptionGroup(
-          context,
-          '🌍 Language',
-          options.language,
-          AppConstants.languages,
-          (value) => onOptionsChanged(options.copyWith(language: value)),
+        Text(
+          'Настройки генерации',
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
-        _buildOptionGroup(
-          context,
-          '⚡ Quality',
-          options.quality,
-          AppConstants.qualities,
-          (value) => onOptionsChanged(options.copyWith(quality: value)),
+        SizedBox(height: 16),
+        
+        // Язык
+        _buildOptionCard(
+          context: context,
+          title: 'Язык',
+          icon: Icons.language,
+          child: DropdownButton<String>(
+            value: options.language,
+            isExpanded: true,
+            items: AppConstants.supportedLanguages.map((lang) {
+              return DropdownMenuItem(
+                value: lang,
+                child: Text(lang),
+              );
+            }).toList(),
+            onChanged: (value) {
+              onOptionsChanged(options.copyWith(language: value));
+            },
+          ),
         ),
-        _buildOptionGroup(
-          context,
-          '🎨 Style',
-          options.style,
-          AppConstants.styles,
-          (value) => onOptionsChanged(options.copyWith(style: value)),
+        
+        SizedBox(height: 16),
+        
+        // Качество видео
+        _buildOptionCard(
+          context: context,
+          title: 'Качество видео',
+          icon: Icons.high_quality,
+          child: DropdownButton<String>(
+            value: options.videoQuality,
+            isExpanded: true,
+            items: AppConstants.videoQualities.map((quality) {
+              return DropdownMenuItem(
+                value: quality,
+                child: Text(quality),
+              );
+            }).toList(),
+            onChanged: (value) {
+              onOptionsChanged(options.copyWith(videoQuality: value));
+            },
+          ),
         ),
-        _buildOptionGroup(
-          context,
-          '⏱️ Duration',
-          options.duration,
-          AppConstants.durations,
-          (value) => onOptionsChanged(options.copyWith(duration: value)),
+        
+        SizedBox(height: 16),
+        
+        // Стиль видео
+        _buildOptionCard(
+          context: context,
+          title: 'Стиль',
+          icon: Icons.style,
+          child: DropdownButton<String>(
+            value: options.videoStyle,
+            isExpanded: true,
+            items: AppConstants.videoStyles.map((style) {
+              return DropdownMenuItem(
+                value: style,
+                child: Text(style),
+              );
+            }).toList(),
+            onChanged: (value) {
+              onOptionsChanged(options.copyWith(videoStyle: value));
+            },
+          ),
+        ),
+        
+        SizedBox(height: 16),
+        
+        // Дополнительные опции
+        _buildOptionCard(
+          context: context,
+          title: 'Дополнительно',
+          icon: Icons.settings,
+          child: Column(
+            children: [
+              SwitchListTile(
+                title: Text('Использовать GPU'),
+                subtitle: Text('Ускорение обработки'),
+                value: options.useGPU,
+                onChanged: (value) {
+                  onOptionsChanged(options.copyWith(useGPU: value));
+                },
+                contentPadding: EdgeInsets.zero,
+              ),
+              SwitchListTile(
+                title: Text('Сохранить в облако'),
+                subtitle: Text('Автоматическая загрузка результата'),
+                value: options.saveToCloud,
+                onChanged: (value) {
+                  onOptionsChanged(options.copyWith(saveToCloud: value));
+                },
+                contentPadding: EdgeInsets.zero,
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
-
-  Widget _buildOptionGroup(
-    BuildContext context,
-    String label,
-    String selectedValue,
-    Map<String, String> optionsMap,
-    Function(String) onChanged,
-  ) {
-    final isMobile = ResponsiveHelper.isMobile(context);
-    
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        border: Border.all(color: Colors.grey.shade300, width: 2),
-        borderRadius: BorderRadius.circular(15),
+  
+  Widget _buildOptionCard({
+    required BuildContext context,
+    required String title,
+    required IconData icon,
+    required Widget child,
+  }) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
-      padding: EdgeInsets.all(isMobile ? 15 : 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-              fontSize: ResponsiveHelper.getFontSize(context, 14),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: DropdownButtonFormField<String>(
-              value: selectedValue,
-              onChanged: (value) => onChanged(value!),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: Theme.of(context).primaryColor),
+                SizedBox(width: 8),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: isMobile ? 8 : 12,
-                  vertical: isMobile ? 8 : 12,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-              ),
-              style: TextStyle(
-                fontSize: ResponsiveHelper.getFontSize(context, 12),
-                color: Colors.black,
-              ),
-              items: optionsMap.entries.map((entry) {
-                return DropdownMenuItem<String>(
-                  value: entry.key,
-                  child: Text(
-                    entry.value,
-                    style: TextStyle(fontSize: ResponsiveHelper.getFontSize(context, 12)),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                );
-              }).toList(),
+              ],
             ),
-          ),
-        ],
+            SizedBox(height: 12),
+            child,
+          ],
+        ),
       ),
     );
   }

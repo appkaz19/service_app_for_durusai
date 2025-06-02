@@ -51,7 +51,7 @@ class FileService {
 
       if (result != null && result.files.isNotEmpty) {
         final file = result.files.first;
-        
+
         if (file.bytes != null) {
           return SelectedFile(
             name: file.name,
@@ -70,7 +70,7 @@ class FileService {
 
   static CustomFileType _getFileType(String? extension) {
     if (extension == null) return CustomFileType.unknown;
-    
+
     switch (extension.toLowerCase()) {
       case 'jpg':
       case 'jpeg':
@@ -99,20 +99,20 @@ class FileService {
   }
 
   static bool isValidImageFile(SelectedFile file) {
-    return file.type == CustomFileType.image && 
-           file.size <= AppConfig.maxImageSizeMB * 1024 * 1024;
+    return file.type == CustomFileType.image &&
+        file.size <= AppConfig.maxImageSizeMB * 1024 * 1024;
   }
 
   static bool isValidAudioFile(SelectedFile file) {
-    return file.type == CustomFileType.audio && 
-           file.size <= AppConfig.maxAudioSizeMB * 1024 * 1024;
+    return file.type == CustomFileType.audio &&
+        file.size <= AppConfig.maxAudioSizeMB * 1024 * 1024;
   }
 }
 
 class FileException implements Exception {
   final String message;
   FileException(this.message);
-  
+
   @override
   String toString() => 'FileException: $message';
 }

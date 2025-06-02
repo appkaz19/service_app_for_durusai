@@ -29,7 +29,7 @@ class _ResultDisplayState extends State<ResultDisplay>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     _celebrationAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
@@ -37,7 +37,7 @@ class _ResultDisplayState extends State<ResultDisplay>
       parent: _celebrationController,
       curve: Curves.elasticOut,
     ));
-    
+
     _celebrationController.forward();
   }
 
@@ -72,7 +72,7 @@ class _ResultDisplayState extends State<ResultDisplay>
               children: [
                 Container(
                   padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: AppTheme.robotGradient,
                     shape: BoxShape.circle,
                   ),
@@ -102,7 +102,6 @@ class _ResultDisplayState extends State<ResultDisplay>
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
-                
                 if (widget.result.videoUrl != null) ...[
                   _buildDownloadButton(
                     icon: Icons.video_file,
@@ -123,7 +122,6 @@ class _ResultDisplayState extends State<ResultDisplay>
                   ),
                   const SizedBox(height: 20),
                 ],
-                
                 Row(
                   children: [
                     Expanded(
@@ -149,7 +147,8 @@ class _ResultDisplayState extends State<ResultDisplay>
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey.shade600,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),

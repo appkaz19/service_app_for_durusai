@@ -23,21 +23,21 @@ class _CustomRobot3DState extends State<CustomRobot3D>
   late AnimationController _rotationController;
   late AnimationController _floatController;
   late AnimationController _eyeController;
-  
+
   @override
   void initState() {
     super.initState();
-    
+
     _rotationController = AnimationController(
       duration: const Duration(seconds: 8),
       vsync: this,
     )..repeat();
-    
+
     _floatController = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: this,
     )..repeat(reverse: true);
-    
+
     _eyeController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
@@ -55,9 +55,10 @@ class _CustomRobot3DState extends State<CustomRobot3D>
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveHelper.isMobile(context);
-    
-    print('🤖 Строим CustomRobot3D: kIsWeb=$kIsWeb, enable3DRobot=${AppConfig.enable3DRobot}');
-    
+
+    print(
+        '🤖 Строим CustomRobot3D: kIsWeb=$kIsWeb, enable3DRobot=${AppConfig.enable3DRobot}');
+
     return Container(
       height: widget.height,
       decoration: BoxDecoration(
@@ -148,8 +149,8 @@ class _CustomRobot3DState extends State<CustomRobot3D>
               width: 12,
               height: 12,
               decoration: BoxDecoration(
-                color: _eyeController.value > 0.5 
-                    ? AppTheme.robotBlue 
+                color: _eyeController.value > 0.5
+                    ? AppTheme.robotBlue
                     : AppTheme.robotBlue.withOpacity(0.5),
                 shape: BoxShape.circle,
                 boxShadow: [
@@ -164,7 +165,7 @@ class _CustomRobot3DState extends State<CustomRobot3D>
           },
         ),
         const SizedBox(height: 10),
-        
+
         // Голова
         Container(
           width: 100,
@@ -230,7 +231,7 @@ class _CustomRobot3DState extends State<CustomRobot3D>
           ),
         ),
         const SizedBox(height: 10),
-        
+
         // Тело
         Container(
           width: 120,
@@ -283,17 +284,19 @@ class _CustomRobot3DState extends State<CustomRobot3D>
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          color: value > 0.5 
-                              ? AppTheme.robotBlue 
+                          color: value > 0.5
+                              ? AppTheme.robotBlue
                               : Colors.white.withOpacity(0.3),
                           shape: BoxShape.circle,
-                          boxShadow: value > 0.5 ? [
-                            BoxShadow(
-                              color: AppTheme.robotBlue,
-                              blurRadius: 6,
-                              spreadRadius: 1,
-                            ),
-                          ] : null,
+                          boxShadow: value > 0.5
+                              ? [
+                                  const BoxShadow(
+                                    color: AppTheme.robotBlue,
+                                    blurRadius: 6,
+                                    spreadRadius: 1,
+                                  ),
+                                ]
+                              : null,
                         ),
                       );
                     },
@@ -304,7 +307,7 @@ class _CustomRobot3DState extends State<CustomRobot3D>
           ),
         ),
         const SizedBox(height: 20),
-        
+
         // Название с эффектами
         ShaderMask(
           shaderCallback: (bounds) => const LinearGradient(

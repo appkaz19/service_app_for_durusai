@@ -5,13 +5,13 @@ class AppTheme {
   static const Color secondaryColor = Color(0xFF764ba2);
   static const Color accentColor = Color(0xFF28a745);
   static const Color robotBlue = Color(0xFF00ffff);
-  
+
   static const Gradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [primaryColor, secondaryColor],
   );
-  
+
   static const Gradient robotGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
@@ -19,9 +19,9 @@ class AppTheme {
   );
 
   static ThemeData get lightTheme => ThemeData(
-    primarySwatch: Colors.blue,
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    fontFamily: 'Roboto',
-    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
-  );
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: 'Roboto',
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+      );
 }

@@ -9,11 +9,29 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # HTTP и сеть
   http: ^1.1.0
+  url_launcher: ^6.2.2
+
+  # Работа с файлами
   file_picker: ^6.1.1
-  path_provider: ^2.1.1
-  url_launcher: ^6.2.1
+  path: ^1.8.3
+
+  # UI компоненты
+  dotted_border: ^2.1.0
+
+  # Видео
+  video_player: ^2.8.2
+
+  # Web view (если нужен)
   webview_flutter: ^4.4.2
+
+  # Дополнительные зависимости (добавьте если используете)
+  # provider: ^6.1.1
+  # flutter_svg: ^2.0.9
+  # animations: ^2.0.11
+  # google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +40,23 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  plugin:
+    platforms:
+      macos:
+        default_package: file_picker
+      windows:
+        default_package: file_picker
+
+  # Добавьте assets если есть
+  # assets:
+  #   - assets/images/
+  #   - assets/icons/
+
+  # Для кастомных шрифтов
+  # fonts:
+  #   - family: Roboto
+  #     fonts:
+  #       - asset: fonts/Roboto-Regular.ttf
+  #       - asset: fonts/Roboto-Bold.ttf
+  #         weight: 700

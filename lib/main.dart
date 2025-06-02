@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 // ignore: avoid_web_libraries_in_flutter
@@ -19,7 +18,7 @@ void _register3DRobot() {
   ui.platformViewRegistry.registerViewFactory(
     'durusai-3d-robot',
     (int viewId) {
-      final containerId = 'robot-container-\$viewId';
+      const containerId = 'robot-container-\$viewId';
 
       final div = html.DivElement()
         ..id = containerId
@@ -125,7 +124,7 @@ class DurusAIApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'DurusAI Robot',
       home: Scaffold(
         backgroundColor: Colors.black,
