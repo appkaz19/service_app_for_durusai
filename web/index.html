@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="DURUSAI - AI-Powered Voice & Video Generation. Transform any face into a talking avatar with advanced AI technology.">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="DURUSAI">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>DURUSAI - AI Voice & Video Generator</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      overflow: hidden;
+    }
+    
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+    }
+    
+    .loading-robot {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      animation: robotFloat 3s ease-in-out infinite;
+      position: relative;
+    }
+    
+    .loading-robot::before {
+      content: '🤖';
+      font-size: 40px;
+      animation: robotBlink 2s infinite;
+    }
+    
+    .loading-robot::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 20px;
+      background: #00ffff;
+      border-radius: 2px;
+      animation: antennaGlow 1s ease-in-out infinite alternate;
+    }
+    
+    .loading h1 {
+      font-size: 3.5rem;
+      margin: 0 0 1rem 0;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      background: linear-gradient(45deg, #ffffff, #00ffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .loading p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin: 0.5rem 0 2rem 0;
+      font-weight: 500;
+    }
+    
+    .loading-subtitle {
+      font-size: 1rem;
+      opacity: 0.7;
+      margin-bottom: 2rem;
+    }
+    
+    .neural-progress {
+      width: 300px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    
+    .neural-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #00ffff, #ffffff);
+      border-radius: 3px;
+      animation: neuralProgress 2s ease-in-out infinite;
+    }
+    
+    .loading-text {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      animation: pulse 2s infinite;
+    }
+    
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+      max-width: 400px;
+    }
+    
+    .tech-item {
+      text-align: center;
+      opacity: 0.6;
+      animation: techPulse 3s ease-in-out infinite;
+    }
+    
+    .tech-item:nth-child(1) { animation-delay: 0s; }
+    .tech-item:nth-child(2) { animation-delay: 0.5s; }
+    .tech-item:nth-child(3) { animation-delay: 1s; }
+    .tech-item:nth-child(4) { animation-delay: 1.5s; }
+    
+    @keyframes robotFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes robotBlink {
+      0%, 90%, 100% { opacity: 1; }
+      95% { opacity: 0.3; }
+    }
+    
+    @keyframes antennaGlow {
+      0% { box-shadow: 0 0 5px #00ffff; }
+      100% { box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff; }
+    }
+    
+    @keyframes neuralProgress {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(300px); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    
+    @keyframes techPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    
+    @media (max-width: 768px) {
+      .loading h1 { font-size: 2.5rem; }
+      .loading p { font-size: 1rem; padding: 0 20px; }
+      .loading-robot { width: 60px; height: 60px; }
+      .loading-robot::before { font-size: 30px; }
+      .neural-progress { width: 250px; }
+      .tech-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    
+    html.loaded, body.loaded { overflow: auto; }
+  </style>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+  <div class="loading" id="loading">
+    <div class="loading-robot"></div>
+    <h1>DURUSAI</h1>
+    <p>AI-Powered Voice & Video Generation</p>
+    <div class="loading-subtitle">Neural networks initializing...</div>
+    
+    <div class="neural-progress">
+      <div class="neural-progress-bar"></div>
+    </div>
+    <div class="loading-text">Processing advanced AI algorithms</div>
+    
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div>🎭</div>
+        <div style="font-size: 0.8rem;">Facial AI</div>
+      </div>
+      <div class="tech-item">
+        <div>🎤</div>
+        <div style="font-size: 0.8rem;">Voice AI</div>
+      </div>
+      <div class="tech-item">
+        <div>🧠</div>
+        <div style="font-size: 0.8rem;">Neural Net</div>
+      </div>
+      <div class="tech-item">
+        <div>⚡</div>
+        <div style="font-size: 0.8rem;">Real-time</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var serviceWorkerVersion = "{{flutter_service_worker_version}}";
+    var scriptLoaded = false;
+    
+    function loadMainDartJs() {
+      if (scriptLoaded) return;
+      scriptLoaded = true;
+      var scriptTag = document.createElement('script');
+      scriptTag.src = 'main.dart.js';
+      scriptTag.type = "application/javascript";
+      document.body.append(scriptTag);
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+        navigator.serviceWorker.register(serviceWorkerUrl)
+          .then((reg) => {
+            function waitForActivation(serviceWorker) {
+              serviceWorker.addEventListener('statechange', () => {
+                if (serviceWorker.state == 'activated') {
+                  console.log('✅ DURUSAI Service Worker ready');
+                  loadMainDartJs();
+                }
+              });
+            }
+            if (!reg.active && (reg.installing || reg.waiting)) {
+              waitForActivation(reg.installing || reg.waiting);
+            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
+              console.log('🔄 Updating DURUSAI...');
+              reg.update();
+              waitForActivation(reg.installing);
+            } else {
+              console.log('⚡ Loading DURUSAI...');
+              loadMainDartJs();
+            }
+          });
+
+        setTimeout(() => {
+          if (!scriptLoaded) {
+            console.warn('⚠️ DURUSAI fallback loading...');
+            loadMainDartJs();
+          }
+        }, 4000);
+      });
+    } else {
+      loadMainDartJs();
+    }
+
+    window.addEventListener('flutter-first-frame', function () {
+      var loading = document.getElementById('loading');
+      if (loading) {
+        loading.style.opacity = '0';
+        loading.style.transition = 'opacity 0.8s ease-out';
+        setTimeout(function() {
+          loading.style.display = 'none';
+          document.documentElement.classList.add('loaded');
+          document.body.classList.add('loaded');
+          console.log('🚀 DURUSAI activated!');
+        }, 800);
+      }
+    });
+
+    setTimeout(function() {
+      var loading = document.getElementById('loading');
+      if (loading && loading.style.display !== 'none') {
+        console.warn('⚠️ DURUSAI loading timeout');
+        loading.style.display = 'none';
+        document.documentElement.classList.add('loaded');
+        document.body.classList.add('loaded');
+      }
+    }, 12000);
+  </script>
+</body>
+</html>
