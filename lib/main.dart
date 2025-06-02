@@ -65,12 +65,10 @@ void _register3DRobot() {
 }
 
 void _loadThreeJSAndCreateRobot(String containerId) {
-  final script = html.ScriptElement()
-    ..src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
-    ..onLoad.listen((_) {
-      final js = html.ScriptElement()
-        ..type = 'application/javascript'
-        ..innerHtml = '''
+  void createRobot() {
+    final js = html.ScriptElement()
+      ..type = 'application/javascript'
+      ..innerHtml = '''
           (function() {
             const container = document.getElementById("\$containerId");
             if (!container) return;
@@ -102,10 +100,24 @@ void _loadThreeJSAndCreateRobot(String containerId) {
           })();
         ''';
 
-      html.document.body!.append(js);
-    });
+    html.document.body!.append(js);
+  }
 
-  html.document.head!.append(script);
+  final existing =
+      html.document.head!.querySelector('script[src*="three.min.js"]');
+
+  if (existing != null) {
+    createRobot();
+  } else {
+    final script = html.ScriptElement()
+      ..src =
+          'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
+      ..onLoad.listen((_) {
+        createRobot();
+      });
+
+    html.document.head!.append(script);
+  }
 }
 
 class DurusAIApp extends StatelessWidget {
